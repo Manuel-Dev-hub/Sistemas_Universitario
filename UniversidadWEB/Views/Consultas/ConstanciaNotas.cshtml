@@ -1,0 +1,109 @@
+﻿@model IEnumerable<UniversidadWEB.Models.Nota>
+@{
+    ViewData["Title"] = "Constancia de Notas";
+    var alumno = ViewBag.Alumno as UniversidadWEB.Models.Alumno;
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">@ViewData["Title"]</h2>
+    </div>
+    <div class="card-body">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form method="post" class="form-inline">
+                    <div class="form-group">
+                        <label class="mr-2">Seleccione Alumno:</label>
+                        <select name="alumnoId" class="form-select" asp-items="@((SelectList)ViewBag.Alumnos)" required>
+                            <option value="">-- Seleccione --</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Consultar</button>
+                </form>
+            </div>
+        </div>
+
+        @if (alumno != null)
+        {
+            <div class="mb-4">
+                <h4>Datos del Alumno</h4>
+                <dl class="row">
+                    <dt class="col-sm-3">Nombre:</dt>
+                    <dd class="col-sm-9">@alumno.Nombres @alumno.apellido</dd>
+                    <dt class="col-sm-3">Carnet:</dt>
+                    <dd class="col-sm-9">@alumno.Carnet</dd>
+                </dl>
+            </div>
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped" id="notasTable">
+                        <thead>
+                            <tr>
+                                <th>Curso</th>
+                                <th>Ciclo</th>
+                                <th>Año</th>
+                                <th>Calificación</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var nota in Model)
+                            {
+                                <tr>
+                                    <td>@nota.Asignacion?.Curso?.Nombre</td>
+                                    <td>@nota.Asignacion?.Ciclo</td>
+                                    <td>@nota.Asignacion?.Anio</td>
+                                    <td>@nota.Calificacion.ToString("N2")</td>
+                                    <td>
+                                        @if (nota.Calificacion >= 61)
+                                        {
+                                            <span class="badge bg-success">Aprobado</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Reprobado</span>
+                                        }
+                                    </td>
+                                    <td>@nota.FechaRegistro.ToShortDateString()</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4">
+                    <button onclick="window.print()" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Imprimir
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">No se encontraron notas para este alumno.</div>
+            }
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            if ($('#notasTable').length) {
+                $('#notasTable').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                    },
+                    "order": [[2, "desc"]]
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,59 @@
+﻿@model UniversidadWEB.Models.Curso
+@{
+    ViewData["Title"] = "Eliminar Curso";
+}
+
+<h1>Eliminar Curso</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h3>¿Está seguro que desea eliminar este curso?</h3>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Creditos)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Creditos)
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Carrera)
+            </dt>
+            <dd class="col-sm-10">
+                @(Model.Carrera?.Nombre ?? "No asignada")
+            </dd>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Estado)
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Estado)
+                {
+                    <span class="badge bg-success">Activo</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Inactivo</span>
+                }
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="CursoID" />
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </form>
+    </div>
+</div>

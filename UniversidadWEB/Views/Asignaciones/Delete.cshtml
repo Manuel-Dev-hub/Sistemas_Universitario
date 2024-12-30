@@ -1,0 +1,52 @@
+﻿@using UniversidadWEB
+@using UniversidadWEB.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model UniversidadWEB.Models.Asignacion
+@{
+    ViewData["Title"] = "Eliminar Asignación";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Eliminar Asignación</h2>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">¿Está seguro de que desea eliminar esta asignación?</h4>
+            <p>Esta acción desactivará la asignación en el sistema.</p>
+        </div>
+
+        <dl class="row">
+            <dt class="col-sm-3">Alumno</dt>
+            <dd class="col-sm-9">@Model.Alumno?.Nombres @Model.Alumno?.apellido</dd>
+
+            <dt class="col-sm-3">Curso</dt>
+            <dd class="col-sm-9">@Model.Curso?.Nombre</dd>
+
+            <dt class="col-sm-3">Catedrático</dt>
+            <dd class="col-sm-9">@Model.Catedratico?.Nombres @Model.Catedratico?.Apellidos</dd>
+
+            <dt class="col-sm-3">Ciclo</dt>
+            <dd class="col-sm-9">@Model.Ciclo</dd>
+
+            <dt class="col-sm-3">Año</dt>
+            <dd class="col-sm-9">@Model.Anio</dd>
+
+            <dt class="col-sm-3">Fecha de Asignación</dt>
+            <dd class="col-sm-9">@Model.FechaAsignacion.ToShortDateString()</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="AsignacionID" />
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Confirmar Eliminación
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

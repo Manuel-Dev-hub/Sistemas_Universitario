@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Consulta de Constancias";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Consulta de Constancias</h2>
+    </div>
+    <div class="card-body">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Constancia de Cursos Aprobados</h5>
+                        <p class="card-text">Muestra los cursos aprobados por el alumno.</p>
+                        <form asp-controller="Consultas" asp-action="CursosAprobados" method="post" class="row g-3">
+                            <div class="col-md-8">
+                                <select name="alumnoId" class="form-select"
+                                        asp-items="@((SelectList)ViewBag.Alumnos)" required>
+                                    <option value="">Seleccione un Alumno</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100">Consultar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Registro de Notas</h5>
+                        <p class="card-text">Muestra todas las notas del alumno.</p>
+                        <form asp-action="RegistroNotas" method="get" class="row g-3">
+                            <div class="col-md-8">
+                                <select name="alumnoId" class="form-select"
+                                        asp-items="@((SelectList)ViewBag.Alumnos)" required>
+                                    <option value="">Seleccione un Alumno</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100">Consultar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

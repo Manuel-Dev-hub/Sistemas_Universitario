@@ -1,0 +1,51 @@
+﻿@model UniversidadWEB.Models.Catedratico
+
+@{
+    ViewData["Title"] = "Eliminar Catedrático";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Eliminar Catedrático</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>¿Está seguro que desea eliminar este registro?</h3>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Nombres)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Nombres)</dd>
+
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Apellidos)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Apellidos)</dd>
+
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Email)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Email)</dd>
+
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Telefono)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Telefono)</dd>
+
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Estado)</dt>
+                <dd class="col-sm-10">
+                    @if (Model.Estado)
+                    {
+                        <span class="badge bg-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactivo</span>
+                    }
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="CatedraticoID" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Confirmar Eliminación
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

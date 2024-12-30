@@ -1,0 +1,85 @@
+﻿@using UniversidadWEB
+@using UniversidadWEB.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model UniversidadWEB.Models.Asignacion
+
+@{
+    ViewData["Title"] = "Editar Asignación";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Editar Asignación</h2>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <input type="hidden" asp-for="AsignacionID" />
+            <input type="hidden" asp-for="FechaAsignacion" />
+            <input type="hidden" asp-for="Estado" />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="AlumnoID" class="control-label">Alumno</label>
+                        <select asp-for="AlumnoID" class="form-select" asp-items="ViewBag.Alumnos">
+                            <option value="">-- Seleccione un Alumno --</option>
+                        </select>
+                        <span asp-validation-for="AlumnoID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="CursoID" class="control-label">Curso</label>
+                        <select asp-for="CursoID" class="form-select" asp-items="ViewBag.Cursos">
+                            <option value="">-- Seleccione un Curso --</option>
+                        </select>
+                        <span asp-validation-for="CursoID" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="CatedraticoID" class="control-label">Catedrático</label>
+                        <select asp-for="CatedraticoID" class="form-select" asp-items="ViewBag.Catedraticos">
+                            <option value="">-- Seleccione un Catedrático --</option>
+                        </select>
+                        <span asp-validation-for="CatedraticoID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label asp-for="Ciclo" class="control-label">Ciclo</label>
+                        <input asp-for="Ciclo" class="form-control" />
+                        <span asp-validation-for="Ciclo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label asp-for="Anio" class="control-label">Año</label>
+                        <input asp-for="Anio" class="form-control" type="number" min="2000" max="2100" />
+                        <span asp-validation-for="Anio" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

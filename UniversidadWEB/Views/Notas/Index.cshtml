@@ -1,0 +1,99 @@
+﻿@model IEnumerable<UniversidadWEB.Models.Nota>
+@{
+    ViewData["Title"] = "Registro de Notas";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Registro de Notas</h2>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col">
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Registrar Nueva Nota
+                </a>
+            </div>
+        </div>
+
+        <form asp-action="Index" method="get" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <input type="text" name="busqueda" class="form-control"
+                       placeholder="Buscar por alumno o curso..."
+                       value="@Context.Request.Query["busqueda"]" />
+            </div>
+            <div class="col-md-3">
+                <select name="ciclo" class="form-select" asp-items="@(new SelectList(ViewBag.Ciclos))">
+                    <option value="">Todos los Ciclos</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="anio" class="form-select" asp-items="@(new SelectList(ViewBag.Anios))">
+                    <option value="">Todos los Años</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-secondary w-100">Filtrar</button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-striped" id="notasTable">
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Curso</th>
+                        <th>Ciclo</th>
+                        <th>Año</th>
+                        <th>Nota</th>
+                        <th>Fecha Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Asignacion.Alumno?.NombreCompleto</td>
+                            <td>@item.Asignacion.Curso?.Nombre</td>
+                            <td>@item.Asignacion.Ciclo</td>
+                            <td>@item.Asignacion.Anio</td>
+                            <td>@item.Calificacion.ToString("N2")</td>  <!-- Cambiado de nota.Calificacion a item.Calificacion -->
+                            <td>@item.FechaRegistro.ToShortDateString()</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@item.NotaID"
+                                       class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.NotaID"
+                                       class="btn btn-sm btn-info" title="Detalles">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#notasTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                },
+                "order": [[5, "desc"]]
+            });
+
+            // Restaurar valores de los filtros
+            var urlParams = new URLSearchParams(window.location.search);
+            $('select[name="ciclo"]').val(urlParams.get('ciclo'));
+            $('select[name="anio"]').val(urlParams.get('anio'));
+        });
+    </script>
+}

@@ -1,0 +1,114 @@
+﻿@using UniversidadWEB
+@using UniversidadWEB.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model IEnumerable<UniversidadWEB.Models.Asignacion>
+@{
+    ViewData["Title"] = "Asignaciones de Cursos";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Asignaciones de Cursos</h2>
+    </div>
+    <div class="card-body">
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["Mensaje"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="row mb-3">
+            <div class="col">
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nueva Asignación
+                </a>
+            </div>
+        </div>
+
+        <form asp-action="Index" method="get" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <input type="text" name="busqueda" class="form-control"
+                       placeholder="Buscar por alumno o curso..."
+                       value="@Context.Request.Query["busqueda"]" />
+            </div>
+            <div class="col-md-3">
+                <select name="ciclo" class="form-select" asp-items="@(new SelectList(ViewBag.Ciclos))">
+                    <option value="">Todos los Ciclos</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="anio" class="form-select" asp-items="@(new SelectList(ViewBag.Anios))">
+                    <option value="">Todos los Años</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-secondary w-100">
+                    <i class="fas fa-search"></i> Filtrar
+                </button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Curso</th>
+                        <th>Catedrático</th>
+                        <th>Ciclo</th>
+                        <th>Año</th>
+                        <th>Fecha Asignación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Alumno?.NombreCompleto</td>
+                            <td>@item.Curso?.Nombre</td>
+                            <td>@item.Catedratico?.Nombres @item.Catedratico?.Apellidos</td>
+                            <td>@item.Ciclo</td>
+                            <td>@item.Anio</td>
+                            <td>@item.FechaAsignacion.ToShortDateString()</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@item.AsignacionID"
+                                       class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.AsignacionID"
+                                       class="btn btn-sm btn-info" title="Detalles">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.AsignacionID"
+                                       class="btn btn-sm btn-danger" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            $('select[name="ciclo"]').val(urlParams.get('ciclo'));
+            $('select[name="anio"]').val(urlParams.get('anio'));
+
+            // Auto-cerrar alertas después de 5 segundos
+            setTimeout(function () {
+                $('.alert').alert('close');
+            }, 5000);
+        });
+    </script>
+}
